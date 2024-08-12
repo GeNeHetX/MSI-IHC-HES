@@ -1,0 +1,18 @@
+Bootstrap: docker
+From: rocker/tidyverse:4.4.1
+
+%post
+    # Install dependencies
+    apt-get update
+    apt-get install -y --no-install-recommends \
+        libxml2-dev \
+        libtiff-dev \
+        libcurl4-openssl-dev \
+        libfftw3-dev
+
+    # Install R packages
+    Rscript -e "install.packages(c('BiocManager'), repos='https://cloud.r-project.org')" 
+    Rscript -e "BiocManager::install(c('Cardinal'), dependencies = TRUE)"
+
+# %environment
+#     export PATH=/usr/local/lib/R/site-library:$PATH

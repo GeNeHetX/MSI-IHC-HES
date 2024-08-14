@@ -1,6 +1,6 @@
 # This is the configuration file for the pipeline
 
-lame: 13AG00043_26_lame  # Name of the sample
+lame: 13AG00043_26  # Name of the sample
 path_to_data: data  # Path to the data directory excluding the sample name
 
 #####################

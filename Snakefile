@@ -35,10 +35,8 @@ rule maldi_proccess:
         f"{config['path_to_data']}/{config['lame']}/results/mse_processed.imzML/mse_processed.ibd"
     singularity:
         "cardinal.sif"
-    # resources:
-    #     cores=24
     shell:
-        f"Rscript maldi_proccess.R"
+        "Rscript maldi_proccess.R"
 
 # Run the peak detection R script
 rule maldi_peaks:
@@ -52,10 +50,8 @@ rule maldi_peaks:
 
     singularity:
         "cardinal.sif"
-    # resources:
-    #     cores=24
     shell:
-        f"Rscript maldi_peaks.R"
+        "Rscript maldi_peaks.R"
 
 
 # Run the pixel geojson generation python script
@@ -173,3 +169,18 @@ rule mask_densities:
         "m2aia.sif"
     script:
         "mask_densities.py"
+
+
+# Run the setter R script to set the densities in the imzML file
+rule maldi_densities:
+    input:
+        f"{config['path_to_data']}/{config['lame']}/results/mse_peaks.imzML/mse_peaks.imzML",
+        f"{config['path_to_data']}/{config['lame']}/results/mse_peaks.imzML/mse_peaks.ibd",
+        f"{config['path_to_data']}/{config['lame']}/results/pixels_maldi_warped_density_df.csv"
+    output: 
+        f"{config['path_to_data']}/{config['lame']}/results/mse_densities.imzML/mse_densities.imzML",
+        f"{config['path_to_data']}/{config['lame']}/results/mse_densities.imzML/mse_densities.ibd"
+    singularity:
+        "cardinal.sif"
+    shell:
+        "Rscript imzml_setter.R"

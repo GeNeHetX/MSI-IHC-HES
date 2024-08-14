@@ -1,0 +1,20 @@
+Bootstrap: docker
+From: python:3.12.3-bookworm
+
+%files
+    requirements.txt requirements.txt
+
+%post
+    # Update the package list
+    apt-get update
+
+    # Install the required packages
+    apt-get install -q -y --no-install-recommends \
+        libglu1-mesa-dev \
+        libgomp1 \
+        libopenslide-dev \
+        python3-rtree
+
+    # Install Python dependencies
+    pip install --no-cache-dir -r requirements.txt
+    rm requirements.txt

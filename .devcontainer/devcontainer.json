@@ -36,7 +36,8 @@
 
     // Mount the data directory in the container.
     "mounts": [
-        "source=/home/ahmed/Data,target=/workspaces/MSI-IHC-HES/data,type=bind,consistency=cached"
+        "source=/home/ahmed/Data,target=/workspaces/MSI-IHC-HES/data,type=bind,consistency=cached",
+        "source=/home/ahmed/QP-projects,target=/workspaces/MSI-IHC-HES/qp-projects,type=bind,consistency=cached"
     ]
 
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.

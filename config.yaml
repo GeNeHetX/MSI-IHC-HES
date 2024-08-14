@@ -3,28 +3,78 @@
 lame: 13AG00043_26_lame  # Name of the sample
 path_to_data: data  # Path to the data directory excluding the sample name
 
+#####################
+## MALDI-MSI peaks ##
+#####################
+
+# This is the configuration for the MALDI pipeline
+# The mse.imzml, mse.ibd, mse.mis and coord.csv should be in the directory (path_to_data)/(lame)/maldi/
+
 # Parameters for normalization
 normalization_method: rms  # Method for normalization (tic: Total iones counts)
 
 # Base line reduction
-base_line_method: locmin  # Method for base line reduction (locmin: local minima)
-
-# Parameters for calibration
-calibration_method: median  # Method for calibration (locmax: local maxima)
-calibration_tolerance: 0.1  # Tolerance for the calibration
-units: mz  # Units for the tolerance
+base_line_method: median  # Method for base line reduction
 
 # Parameters for spectrum peak picking
 peak_pick_method: cwt  # Method for peak picking (cwt: continuous wavelet transform)
 signal_to_noise: 3  # Signal to noise ratio
+units: mz  # Units for the tolerance
 
 # Parameters for peak alignment 
 peak_pick_tolerance: 0.25  # Tolerance for the alignment
 plot_selected_peaks: True  # Whether to plot the detected peaks or not
 
 # Parameters for peak filtering
-filtered_frequency: 0.05  # Frequency for the filter
+filtered_frequency: True  # Frequency (True means remove singleton peaks)
 
 # Parameters for pixels geojson
-plot_pixels_and_contour : True  # Whether to plot the pixels and the contour
+plot_pixels_and_contour: True  # Whether to plot the pixels and the contour
 plot_compression: 1000  # Compression factor for the plot
+
+
+###############
+## Alignment ##
+###############
+
+# This is the configuration for the alignment pipeline
+# The images to be aligned should be in the directory (path_to_data)/(lame)/images/alignment
+# The images associated to annotation transfer should be in the directory (path_to_data)/(lame)/images/annotation
+# The annotation_geojson_file should be already in the directory (path_to_data)/(lame)/results
+
+valis_version: 1.0.1  # VALIS docker image version (TAG)
+
+reference_slide: HES.svs  # Name of the reference image
+align_to_reference: True  # Align all images to the reference image
+
+## Crop the images (images_alignment.py)
+# crop="overlap" will crop the images to the region where all of the images overlap.
+# crop="reference" will crop the images to the region where they overlap with the reference image.
+# crop="all" will not perform any cropping. While this keep the all of the image, the dimensions of the registered image can be substantially larger than one that was cropped, as it will need to be large enough accommodate all of the other images.
+crop: reference
+
+# Annotation transfer files
+annotation_file: pixels_maldi.geojson  # Name of the annotation file (annotation_transfer.py)
+warped_annotation_file: pixels_maldi_warped.geojson  # Name of the warped annotation file (annotation_transfer.py)
+
+
+##################
+## Mask density ##
+##################
+
+# This is the configuration for the mask density pipeline
+# The masks should be in the directory (path_to_qp_projects)/(lame)/export
+
+path_to_qp_projects: qp-projects  # Path to the QP-projects
+original_width: 142924  # Width of the aligned images in pixels
+compression: 10 # Compression factor for compressed versions of the masks
+markers:
+  - PANCKm-CD8r_CD8  # CD8+ T cells
+  - PANCKm-CD8r_Tumor  # Tumor cells
+  - PANCKm-CD8r_Stroma  # Stroma in the tissue
+  - PicroSiriusRed_Collagen  # Collagen in the stroma
+  - HES_Lesion  # Tumor regions
+  - PANCKm-CD8r_Defects  # Defects in the tissue
+
+MALDI_PIXEL_LENGTH: 50  # Pixel length of the MALDI images
+IMAGE_PIXEL_LENGTH: 0.2631  # Pixel length of the images in micrometers

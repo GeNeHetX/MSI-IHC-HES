@@ -2,6 +2,23 @@
 configfile: "config.yaml"
 
 
+# Rule all
+rule all:
+    input:
+        f"{config['path_to_data']}/{config['lame']}/results/contour.geojson",
+        f"{config['path_to_data']}/{config['lame']}/results/pixels_maldi.geojson",
+        f"{config['path_to_data']}/{config['lame']}/results/images_aligned/HES.ome.tiff",
+        f"{config['path_to_data']}/{config['lame']}/results/images_aligned/MALDI.ome.tiff",
+        f"{config['path_to_data']}/{config['lame']}/results/pixels_maldi_warped.geojson",
+        f"{config['path_to_data']}/{config['lame']}/results/pixels_maldi_warped_density_gdf.pkl",
+        f"{config['path_to_data']}/{config['lame']}/results/pixels_maldi_warped_density_df.csv",
+        f"{config['path_to_data']}/{config['lame']}/results/mse_densities.imzML/mse_densities.imzML",
+        f"{config['path_to_data']}/{config['lame']}/results/mse_densities.imzML/mse_densities.ibd",
+        f"{config['path_to_data']}/{config['lame']}/results/mse_densities.imzML/mse_densities.pdata",
+        f"{config['path_to_data']}/{config['lame']}/results/mse_densities.imzML/mse_densities.fdata"
+    shell:
+        "echo 'All done!'"
+
 #####################
 ## MALDI-MSI peaks ##
 #####################
@@ -15,6 +32,7 @@ rule cardinal_container:
     shell: 
         "singularity build cardinal.sif cardinal.def"
 
+
 # Build the singularity container for m2aia
 rule m2aia_container:
     input: 
@@ -23,6 +41,7 @@ rule m2aia_container:
         "m2aia.sif"
     shell: 
         "singularity build m2aia.sif m2aia.def"
+
 
 # Run the peak detection R script
 rule maldi_proccess:
@@ -38,6 +57,7 @@ rule maldi_proccess:
     shell:
         "Rscript maldi_proccess.R"
 
+
 # Run the peak detection R script
 rule maldi_peaks:
     input:
@@ -46,27 +66,11 @@ rule maldi_peaks:
         f"{config['path_to_data']}/{config['lame']}/results/mse_processed.imzML/mse_processed.ibd"
     output: 
         f"{config['path_to_data']}/{config['lame']}/results/mse_peaks.imzML/mse_peaks.imzML",
-        f"{config['path_to_data']}/{config['lame']}/results/mse_peaks.imzML/mse_peaks.ibd",
-
+        f"{config['path_to_data']}/{config['lame']}/results/mse_peaks.imzML/mse_peaks.ibd"
     singularity:
         "cardinal.sif"
     shell:
         "Rscript maldi_peaks.R"
-
-
-# Run the pixel geojson generation python script
-rule pixel_geojson:
-    input:
-        "m2aia.sif",
-        f"{config['path_to_data']}/{config['lame']}/maldi/mse.mis",
-        f"{config['path_to_data']}/{config['lame']}/maldi/coord.csv"
-    output: 
-        f"{config['path_to_data']}/{config['lame']}/results/contour.geojson",
-        f"{config['path_to_data']}/{config['lame']}/results/pixels_maldi.geojson"
-    singularity:
-        "m2aia.sif"
-    script:
-        "pixels_geojson.py"
 
 
 
@@ -74,7 +78,7 @@ rule pixel_geojson:
 ## Alignment ##
 ###############
 
-# Rule all
+# Rule to do all the alignment
 rule alignment:
     input:
         f"{config['path_to_data']}/{config['lame']}/results/images_aligned/HES.ome.tiff",
@@ -82,6 +86,7 @@ rule alignment:
         f"{config['path_to_data']}/{config['lame']}/results/pixels_maldi_warped.geojson"
     shell:
         "echo 'Alignment done!'"
+
 
 # Build the singularity container for VALIS
 rule valis_container:
@@ -106,6 +111,23 @@ rule align_images:
         "images_alignment.py"
 
 
+# Run the pixel geojson generation python script
+rule pixel_geojson:
+    input:
+        "m2aia.sif",
+        f"{config['path_to_data']}/{config['lame']}/maldi/mse.mis",
+        f"{config['path_to_data']}/{config['lame']}/maldi/coord.csv"
+    output: 
+        f"{config['path_to_data']}/{config['lame']}/results/contour.geojson",
+        f"{config['path_to_data']}/{config['lame']}/results/pixels_maldi.geojson"
+    singularity:
+        "m2aia.sif"
+    resources:
+        mem_mb = 30720
+    script:
+        "pixels_geojson.py"
+
+
 # Run the annotation transfer python script
 rule annotation_transfer:
     input:
@@ -128,8 +150,10 @@ rule annotation_transfer:
 
 rule densities:
     input:
-        f"{config['path_to_data']}/{config['lame']}/results/pixels_maldi_warped_density_gdf.pkl",
-        f"{config['path_to_data']}/{config['lame']}/results/pixels_maldi_warped_density_df.csv"      
+        f"{config['path_to_data']}/{config['lame']}/results/mse_densities.imzML/mse_densities.imzML",
+        f"{config['path_to_data']}/{config['lame']}/results/mse_densities.imzML/mse_densities.ibd",
+        f"{config['path_to_data']}/{config['lame']}/results/mse_densities.imzML/mse_densities.pdata",
+        f"{config['path_to_data']}/{config['lame']}/results/mse_densities.imzML/mse_densities.fdata"     
     shell:
         "echo 'Mask density done!'"
 
@@ -174,12 +198,15 @@ rule mask_densities:
 # Run the setter R script to set the densities in the imzML file
 rule maldi_densities:
     input:
+        "cardinal.sif",
         f"{config['path_to_data']}/{config['lame']}/results/mse_peaks.imzML/mse_peaks.imzML",
         f"{config['path_to_data']}/{config['lame']}/results/mse_peaks.imzML/mse_peaks.ibd",
         f"{config['path_to_data']}/{config['lame']}/results/pixels_maldi_warped_density_df.csv"
     output: 
         f"{config['path_to_data']}/{config['lame']}/results/mse_densities.imzML/mse_densities.imzML",
-        f"{config['path_to_data']}/{config['lame']}/results/mse_densities.imzML/mse_densities.ibd"
+        f"{config['path_to_data']}/{config['lame']}/results/mse_densities.imzML/mse_densities.ibd",
+        f"{config['path_to_data']}/{config['lame']}/results/mse_densities.imzML/mse_densities.pdata",
+        f"{config['path_to_data']}/{config['lame']}/results/mse_densities.imzML/mse_densities.fdata"
     singularity:
         "cardinal.sif"
     shell:

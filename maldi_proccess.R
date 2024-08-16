@@ -19,7 +19,7 @@ mse <- readMSIData(sprintf("%s/maldi/mse.imzML", path))
 mse_processed <- mse |>
   normalize(method = config$normalization_method) |>  # Normalize the data
   reduceBaseline(method = config$base_line_method) |>  # Reduce the baseline
-  process(BPPARAM = MulticoreParam())
+  process()
 
 # # Compute the mean intensity of each m/z value in the processed data
 # mse_processed <- mse_processed |>

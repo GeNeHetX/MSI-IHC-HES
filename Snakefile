@@ -148,16 +148,6 @@ rule annotation_transfer:
 ## Mask density ##
 ##################
 
-rule densities:
-    input:
-        f"{config['path_to_data']}/{config['lame']}/results/mse_densities.imzML/mse_densities.imzML",
-        f"{config['path_to_data']}/{config['lame']}/results/mse_densities.imzML/mse_densities.ibd",
-        f"{config['path_to_data']}/{config['lame']}/results/mse_densities.imzML/mse_densities.pdata",
-        f"{config['path_to_data']}/{config['lame']}/results/mse_densities.imzML/mse_densities.fdata"     
-    shell:
-        "echo 'Mask density done!'"
-
-
 # Run the mask generation python script
 rule mask_generation:
     input:

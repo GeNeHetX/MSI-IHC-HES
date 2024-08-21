@@ -37,6 +37,7 @@
     // Mount the data directory in the container.
     "mounts": [
         "source=/home/ahmed/Data,target=/workspaces/MSI-IHC-HES/data,type=bind,consistency=cached",
+        "source=/mnt/hdd/Data,target=/workspaces/MSI-IHC-HES/data_hdd,type=bind,consistency=cached",
         "source=/home/ahmed/QP-projects,target=/workspaces/MSI-IHC-HES/qp-projects,type=bind,consistency=cached"
     ]
 

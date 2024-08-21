@@ -112,7 +112,7 @@ rule align_images:
 
 
 # Run the pixel geojson generation python script
-rule pixel_geojson:
+rule pixels_geojson:
     input:
         "m2aia.sif",
         f"{config['path_to_data']}/{config['lame']}/maldi/mse.mis",

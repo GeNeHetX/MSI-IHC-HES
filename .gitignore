@@ -1,8 +1,10 @@
 # general
 core
+*.xml
 
 # Data
 /data
+/data_hdd
 /qp-projects
 
 # Snakemake

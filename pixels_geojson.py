@@ -1,6 +1,7 @@
 # Libraries
 import pandas as pd
 import matplotlib.pyplot as plt
+import m2aia as m2
 import yaml
 import os
 
@@ -28,16 +29,15 @@ geojson_contour = countour_to_geojson(contour=contour,
                                       save=True,
                                       name=f"{path}/results/contour")
 
-# Read the coordinates csv coming from SCiLS
-coord_scils = pd.read_csv(f"{path}/maldi/coord.csv",
-                          skiprows=8,
-                          sep=';')
+# Read the MALDI-MSI spectrum
+imzml = m2.ImzMLReader(imzML_path=f"{path}/maldi/mse.imzML")
 
-# Flip the y axis
-coord_scils["y"] = coord_scils["y"].max() - coord_scils["y"]
+# Extract the x,y coordinates from the imzml file
+coord_imzml = pd.DataFrame(data=[imzml.GetSpectrumPosition(id=i)[:2] for i in range(imzml.number_of_spectra)],
+                           columns=['x', 'y'])
 
 # Align the MALDI-MSI spectrum x,y coordinates with the MALDI image contour
-coord_maldi = align_coord_contour(coord=coord_scils[['x', 'y']].values,
+coord_maldi = align_coord_contour(coord=coord_imzml[['x', 'y']].values,
                                   contour=contour,
                                   conserve_dimensions=False)
 

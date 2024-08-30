@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import PIL
+from PIL import Image
 from skimage import io
 from skimage.filters import threshold_isodata
 import yaml
@@ -15,13 +16,16 @@ with open("config.yaml", 'r') as stream:
 
 # Hyperparameters
 lame = config["lame"]
-original_width = config["original_width"]
 compression = config["compression"]
 markers = config["markers"]
 
 # Define the path to the masks and the QP projects
 path = f"{config['path_to_data']}/{lame}/results/masks"
 path_qp = f"{config['path_to_qp_projects']}/{lame}/export"
+
+# Extract the original width of the image
+with Image.open(f"{config['path_to_data']}/{lame}/results/images_aligned/HES.ome.tiff") as slide:
+    original_width = slide.size[0]
 
 # Create the directory if it does not exist
 os.makedirs(path, exist_ok=True)

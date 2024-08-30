@@ -1,6 +1,6 @@
 # This is the configuration file for the pipeline
 
-lame: 13AG00043-29  # Name of the sample
+lame: 13AG01113-15  # Name of the sample
 path_to_data: data_hdd  # Path to the data directory excluding the sample name
 
 
@@ -67,15 +67,14 @@ warped_annotation_file: pixels_maldi_warped.geojson  # Name of the warped annota
 # The masks should be in the directory (path_to_qp_projects)/(lame)/export
 
 path_to_qp_projects: qp-projects  # Path to the QP-projects
-original_width: 86548  # Width of the aligned images in pixels
 compression: 10 # Compression factor for compressed versions of the masks
 markers:
-  - PANCKm-CD8r_CD8  # CD8+ T cells
-  - PANCKm-CD8r_Tumor  # Tumor cells
-  - PANCKm-CD8r_Stroma  # Stroma in the tissue
-  - PicroSiriusRed_Collagen  # Collagen in the stroma
-  - HES_Lesion  # Tumor regions
-  - PANCKm-CD8r_Defects  # Defects in the tissue
+  xgboost_CD8: PANCKm-CD8r_CD8  # CD8+ T cells
+  xgboost_Tumor: PANCKm-CD8r_Tumor  # Tumor cells
+  xgboost_Stroma: PANCKm-CD8r_Stroma  # Stroma in the tissue
+  xgboost_Collagen: PicroSiriusRed_Collagen  # Collagen in the stroma
+  qupath: HES_Lesion  # Tumor regions
+  qupath: PANCKm-CD8r_Defects  # Defects in the tissue
 
 MALDI_PIXEL_LENGTH: 50  # Pixel length of the MALDI images
 IMAGE_PIXEL_LENGTH: 0.2631  # Pixel length of the images in micrometers

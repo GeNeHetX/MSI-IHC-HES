@@ -10,7 +10,7 @@ with open("config.yaml", 'r') as stream:
 
 # Hyperparameters
 lame = config["lame"]  # Lame name
-markers = config["markers"]  # List of markers
+markers = config["markers"].values()  # List of markers
 
 MALDI_PIXEL_LENGTH = config["MALDI_PIXEL_LENGTH"]  # MALDI pixel length in micrometers
 IMAGE_PIXEL_LENGTH = config["IMAGE_PIXEL_LENGTH"]  # Image pixel length in micrometers

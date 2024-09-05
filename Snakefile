@@ -116,14 +116,11 @@ rule pixels_geojson:
     input:
         "m2aia.sif",
         f"{config['path_to_data']}/{config['lame']}/maldi/mse.mis",
-        f"{config['path_to_data']}/{config['lame']}/maldi/coord.csv"
     output: 
         f"{config['path_to_data']}/{config['lame']}/results/contour.geojson",
         f"{config['path_to_data']}/{config['lame']}/results/pixels_maldi.geojson"
     singularity:
         "m2aia.sif"
-    resources:
-        mem_mb = 30720
     script:
         "pixels_geojson.py"
 
@@ -151,7 +148,6 @@ rule annotation_transfer:
 # Run the mask generation python script
 rule mask_generation:
     input:
-        "m2aia.sif",
         expand("{path_to_qp_projects}/{lame}/export/",
                path_to_qp_projects=config['path_to_qp_projects'],
                lame=config['lame'])
@@ -159,11 +155,9 @@ rule mask_generation:
         expand("{path_to_data}/{lame}/results/masks/{marker}_mask.png",
                path_to_data=config['path_to_data'],
                lame=config['lame'],
-               marker=config['markers'])
-    singularity:
-        "m2aia.sif"
-    script:
-        "mask_generation.py"
+               marker=config['markers'].values())
+    shell:
+        "singularity exec --nv m2aia.sif python mask_generation.py"
 
 
 # Run the mask density python script
@@ -173,7 +167,7 @@ rule mask_densities:
         expand("{path_to_data}/{lame}/results/masks/{marker}_mask.png",
                path_to_data=config['path_to_data'],
                lame=config['lame'],
-               marker=config['markers']),
+               marker=config['markers'].values()),
         f"{config['path_to_data']}/{config['lame']}/results/pixels_maldi_warped.geojson",
         f"{config['path_to_data']}/{config['lame']}/maldi/coord.csv"
     output: 

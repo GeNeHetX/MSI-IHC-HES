@@ -1,5 +1,9 @@
 m2aia
 geopandas
 geojson
+xgboost
 scikit-image
 seaborn
+imagecodecs
+tqdm
+pyaml

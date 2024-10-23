@@ -1,6 +1,6 @@
 # This is the configuration file for the pipeline
 
-lame: 13AG04268-11  # Name of the sample
+lame: 14AG03250-38  # Name of the sample
 path_to_data: data_hdd  # Path to the data directory excluding the sample name
 
 

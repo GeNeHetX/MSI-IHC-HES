@@ -1,24 +1,6 @@
 # Read the config file
 configfile: "config.yaml"
 
-
-# Rule all
-rule all:
-    input:
-        f"{config['path_to_data']}/{config['lame']}/results/contour.geojson",
-        f"{config['path_to_data']}/{config['lame']}/results/pixels_maldi.geojson",
-        f"{config['path_to_data']}/{config['lame']}/results/images_aligned/HES.ome.tiff",
-        f"{config['path_to_data']}/{config['lame']}/results/images_aligned/MALDI.ome.tiff",
-        f"{config['path_to_data']}/{config['lame']}/results/pixels_maldi_warped.geojson",
-        f"{config['path_to_data']}/{config['lame']}/results/pixels_maldi_warped_density_gdf.pkl",
-        f"{config['path_to_data']}/{config['lame']}/results/pixels_maldi_warped_density_df.csv",
-        f"{config['path_to_data']}/{config['lame']}/results/mse_densities.imzML/mse_densities.imzML",
-        f"{config['path_to_data']}/{config['lame']}/results/mse_densities.imzML/mse_densities.ibd",
-        f"{config['path_to_data']}/{config['lame']}/results/mse_densities.imzML/mse_densities.pdata",
-        f"{config['path_to_data']}/{config['lame']}/results/mse_densities.imzML/mse_densities.fdata"
-    shell:
-        "echo 'All done!'"
-
 #####################
 ## MALDI-MSI peaks ##
 #####################

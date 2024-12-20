@@ -72,10 +72,12 @@ rule alignment:
 
 # Build the singularity container for VALIS
 rule valis_container:
+    input: 
+        "valis.def"
     output: 
         "valis.sif"
     shell: 
-        f"singularity build valis.sif docker://cdgatenbee/valis-wsi:{config['valis_version']}"
+        "singularity build valis.sif valis.def"
 
 
 # Run the images alignment python script
@@ -120,6 +122,17 @@ rule annotation_transfer:
         "valis.sif"
     script:
         "annotation_transfer.py"
+
+
+# Run the annotation transfer python script
+rule microdissection_transfer:
+    input:
+        "valis.sif",
+        f"{config['path_to_data']}/{config['lame']}/images/annotation/HES.svs"
+    singularity:
+        "valis.sif"
+    script:
+        "microdissection_transfer.py"
 
 
 

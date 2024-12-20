@@ -1,6 +1,6 @@
 # This is the configuration file for the pipeline
 
-lame: 14AG03250-38  # Name of the sample
+lame: 12AG01290-19  # Name of the sample
 path_to_data: data_hdd  # Path to the data directory excluding the sample name
 
 
@@ -57,6 +57,10 @@ crop: reference
 # Annotation transfer files
 annotation_file: pixels_maldi.geojson  # Name of the annotation file (annotation_transfer.py)
 warped_annotation_file: pixels_maldi_warped.geojson  # Name of the warped annotation file (annotation_transfer.py)
+
+# Microdissection transfer files
+microdissection_non_rigid: True  # Whether to perform a non-rigid transformation for the microdissections
+warped_microdissection_file: microdissections.geojson  # Name of the warped microdissection file (microdissection_transfer.py)
 
 
 ##################

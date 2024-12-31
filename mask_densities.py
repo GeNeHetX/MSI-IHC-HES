@@ -28,13 +28,13 @@ pixels_gdf["x_warped"] = pixels_gdf.centroid.x
 pixels_gdf["y_warped"] = pixels_gdf.centroid.y
 
 
-# Add the original pixel coordinates to the geodataframe
-coord_scils = pd.read_csv(f"{config['path_to_data']}/{lame}/maldi/coord.csv",
-                          skiprows=8,
-                          sep=';')[["x", "y"]]  # Read the original pixels scils coordinates
-coord_scils["y"] = coord_scils["y"].max() - coord_scils["y"]  # Invert the y axis
-pixels_gdf["x_original"] = coord_scils.x  # Add the original x coordinates to the geodataframe
-pixels_gdf["y_original"] = coord_scils.y  # Add the original y coordinates to the geodataframe
+# # Add the original pixel coordinates to the geodataframe
+# coord_scils = pd.read_csv(f"{config['path_to_data']}/{lame}/maldi/coord.csv",
+#                           skiprows=8,
+#                           sep=';')[["x", "y"]]  # Read the original pixels scils coordinates
+# coord_scils["y"] = coord_scils["y"].max() - coord_scils["y"]  # Invert the y axis
+# pixels_gdf["x_original"] = coord_scils.x  # Add the original x coordinates to the geodataframe
+# pixels_gdf["y_original"] = coord_scils.y  # Add the original y coordinates to the geodataframe
 
 # Compute the half length of the square around the centroid in pixels
 l = int((MALDI_PIXEL_LENGTH / IMAGE_PIXEL_LENGTH) / 2)
@@ -42,12 +42,11 @@ l = int((MALDI_PIXEL_LENGTH / IMAGE_PIXEL_LENGTH) / 2)
 # Compute the density of each pixel
 for marker in markers:
     mask = plt.imread(f"{path}/masks/{marker}_mask.png") > 0
-    pixels_gdf[f"Density_{marker.split('_')[1]}"] = [np.mean(mask[int(y)-l:int(y)+l,
-                                                                  int(x)-l:int(x)+l]) 
-                                                     for x, y in zip(pixels_gdf.x_warped, pixels_gdf.y_warped)]
+    pixels_gdf[f"Density_{'_'.join(marker.split('_')[1:])}"] = [np.mean(mask[int(y)-l:int(y)+l, int(x)-l:int(x)+l]) 
+                                                                for x, y in zip(pixels_gdf.x_warped, pixels_gdf.y_warped)]
 
 # Adjust the data types of the density columns
-pixels_gdf = pixels_gdf.astype({f"Density_{marker.split('_')[1]}":'float32'
+pixels_gdf = pixels_gdf.astype({f"Density_{'_'.join(marker.split('_')[1:])}":'float32'
                                 for marker in markers})
 
 # Save the geodataframe to a pickle file

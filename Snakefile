@@ -32,8 +32,8 @@ rule maldi_proccess:
         f"{config['path_to_data']}/{config['lame']}/maldi/mse.imzML",
         f"{config['path_to_data']}/{config['lame']}/maldi/mse.ibd"
     output: 
-        f"{config['path_to_data']}/{config['lame']}/results/mse_processed.imzML/mse_processed.imzML",
-        f"{config['path_to_data']}/{config['lame']}/results/mse_processed.imzML/mse_processed.ibd"
+        protected(f"{config['path_to_data']}/{config['lame']}/results/mse_processed.imzML/mse_processed.imzML"),
+        protected(f"{config['path_to_data']}/{config['lame']}/results/mse_processed.imzML/mse_processed.ibd")
     singularity:
         "cardinal.sif"
     shell:
@@ -43,12 +43,14 @@ rule maldi_proccess:
 # Run the peak detection R script
 rule maldi_peaks:
     input:
-        "cardinal.sif",
-        f"{config['path_to_data']}/{config['lame']}/results/mse_processed.imzML/mse_processed.imzML",
-        f"{config['path_to_data']}/{config['lame']}/results/mse_processed.imzML/mse_processed.ibd"
+        ancient("cardinal.sif"),
+        ancient(f"{config['path_to_data']}/{config['lame']}/results/mse_processed.imzML/mse_processed.imzML"),
+        ancient(f"{config['path_to_data']}/{config['lame']}/results/mse_processed.imzML/mse_processed.ibd")
     output: 
-        f"{config['path_to_data']}/{config['lame']}/results/mse_peaks.imzML/mse_peaks.imzML",
-        f"{config['path_to_data']}/{config['lame']}/results/mse_peaks.imzML/mse_peaks.ibd"
+        protected(f"{config['path_to_data']}/{config['lame']}/results/mse_peaks.imzML/mse_peaks.imzML"),
+        protected(f"{config['path_to_data']}/{config['lame']}/results/mse_peaks.imzML/mse_peaks.ibd"),
+        protected(f"{config['path_to_data']}/{config['lame']}/results/mse_peaks.imzML/mse_peaks.pdata"),
+        protected(f"{config['path_to_data']}/{config['lame']}/results/mse_peaks.imzML/mse_peaks.fdata")
     singularity:
         "cardinal.sif"
     shell:
@@ -65,6 +67,9 @@ rule alignment:
     input:
         f"{config['path_to_data']}/{config['lame']}/results/images_aligned/HES.ome.tiff",
         f"{config['path_to_data']}/{config['lame']}/results/images_aligned/MALDI.ome.tiff",
+        f"{config['path_to_data']}/{config['lame']}/results/images_aligned/PANCKm-CD8r.ome.tiff",
+        f"{config['path_to_data']}/{config['lame']}/results/images_aligned/PicroSiriusRed.ome.tiff",
+        f"{config['path_to_data']}/{config['lame']}/results/images_aligned/BleuAlcian.ome.tiff",
         f"{config['path_to_data']}/{config['lame']}/results/pixels_maldi_warped.geojson"
     shell:
         "echo 'Alignment done!'"
@@ -84,11 +89,18 @@ rule valis_container:
 rule align_images:
     input:
         "valis.sif",
-        f"{config['path_to_data']}/{config['lame']}/images/alignment/HES.svs",
-        f"{config['path_to_data']}/{config['lame']}/images/alignment/MALDI.tif"
+        ancient(f"{config['path_to_data']}/{config['lame']}/images/alignment/HES.svs"),
+        ancient(f"{config['path_to_data']}/{config['lame']}/images/alignment/MALDI.tif"),
+        ancient(f"{config['path_to_data']}/{config['lame']}/images/alignment/PANCKm-CD8r.svs"),
+        ancient(f"{config['path_to_data']}/{config['lame']}/images/alignment/PicroSiriusRed.svs"),
+        ancient(f"{config['path_to_data']}/{config['lame']}/images/alignment/BleuAlcian.svs")
     output: 
-        f"{config['path_to_data']}/{config['lame']}/results/images_aligned/HES.ome.tiff",
-        f"{config['path_to_data']}/{config['lame']}/results/images_aligned/MALDI.ome.tiff"
+        protected(f"{config['path_to_data']}/{config['lame']}/results/images_aligned/HES.ome.tiff"),
+        protected(f"{config['path_to_data']}/{config['lame']}/results/images_aligned/MALDI.ome.tiff"),
+        protected(f"{config['path_to_data']}/{config['lame']}/results/images_aligned/PANCKm-CD8r.ome.tiff"),
+        protected(f"{config['path_to_data']}/{config['lame']}/results/images_aligned/PicroSiriusRed.ome.tiff"),
+        protected(f"{config['path_to_data']}/{config['lame']}/results/images_aligned/BleuAlcian.ome.tiff")
+        
     singularity:
         "valis.sif"
     script:
@@ -99,7 +111,7 @@ rule align_images:
 rule pixels_geojson:
     input:
         "m2aia.sif",
-        f"{config['path_to_data']}/{config['lame']}/maldi/mse.mis",
+        f"{config['path_to_data']}/{config['lame']}/maldi/mse.mis"
     output: 
         f"{config['path_to_data']}/{config['lame']}/results/contour.geojson",
         f"{config['path_to_data']}/{config['lame']}/results/pixels_maldi.geojson"
@@ -112,12 +124,12 @@ rule pixels_geojson:
 # Run the annotation transfer python script
 rule annotation_transfer:
     input:
-        "valis.sif",
-        f"{config['path_to_data']}/{config['lame']}/images/annotation/HES.svs",
-        f"{config['path_to_data']}/{config['lame']}/images/annotation/MALDI.tif",
-        f"{config['path_to_data']}/{config['lame']}/results/pixels_maldi.geojson"
+        ancient("valis.sif"),
+        ancient(f"{config['path_to_data']}/{config['lame']}/images/annotation/HES.svs"),
+        ancient(f"{config['path_to_data']}/{config['lame']}/images/annotation/MALDI.tif"),
+        ancient(f"{config['path_to_data']}/{config['lame']}/results/pixels_maldi.geojson")
     output: 
-        f"{config['path_to_data']}/{config['lame']}/results/pixels_maldi_warped.geojson"
+        protected(f"{config['path_to_data']}/{config['lame']}/results/pixels_maldi_warped.geojson")
     singularity:
         "valis.sif"
     script:
@@ -143,14 +155,14 @@ rule microdissection_transfer:
 # Run the mask generation python script
 rule mask_generation:
     input:
-        expand("{path_to_qp_projects}/{lame}/export/",
-               path_to_qp_projects=config['path_to_qp_projects'],
-               lame=config['lame'])
+        ancient(expand("{path_to_qp_projects}/{lame}/export/",
+                       path_to_qp_projects=config['path_to_qp_projects'],
+                       lame=config['lame']))
     output: 
-        expand("{path_to_data}/{lame}/results/masks/{marker}_mask.png",
-               path_to_data=config['path_to_data'],
-               lame=config['lame'],
-               marker=config['markers'].values())
+        protected(expand("{path_to_data}/{lame}/results/masks/{marker}_mask.png",
+                         path_to_data=config['path_to_data'],
+                         lame=config['lame'],
+                         marker=config['markers'].values()))
     shell:
         "singularity exec --nv m2aia.sif python mask_generation.py"
 
@@ -163,8 +175,7 @@ rule mask_densities:
                path_to_data=config['path_to_data'],
                lame=config['lame'],
                marker=config['markers'].values()),
-        f"{config['path_to_data']}/{config['lame']}/results/pixels_maldi_warped.geojson",
-        f"{config['path_to_data']}/{config['lame']}/maldi/coord.csv"
+        f"{config['path_to_data']}/{config['lame']}/results/pixels_maldi_warped.geojson"
     output: 
         f"{config['path_to_data']}/{config['lame']}/results/pixels_maldi_warped_density_gdf.pkl",
         f"{config['path_to_data']}/{config['lame']}/results/pixels_maldi_warped_density_df.csv"
@@ -180,6 +191,8 @@ rule maldi_densities:
         "cardinal.sif",
         f"{config['path_to_data']}/{config['lame']}/results/mse_peaks.imzML/mse_peaks.imzML",
         f"{config['path_to_data']}/{config['lame']}/results/mse_peaks.imzML/mse_peaks.ibd",
+        f"{config['path_to_data']}/{config['lame']}/results/mse_peaks.imzML/mse_peaks.pdata",
+        f"{config['path_to_data']}/{config['lame']}/results/mse_peaks.imzML/mse_peaks.fdata",
         f"{config['path_to_data']}/{config['lame']}/results/pixels_maldi_warped_density_df.csv"
     output: 
         f"{config['path_to_data']}/{config['lame']}/results/mse_densities.imzML/mse_densities.imzML",

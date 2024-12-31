@@ -1,6 +1,6 @@
 # This is the configuration file for the pipeline
 
-lame: 12AG01290-19  # Name of the sample
+lame: 12AG01290-26  # Name of the sample
 path_to_data: data_hdd  # Path to the data directory excluding the sample name
 
 
@@ -59,7 +59,7 @@ annotation_file: pixels_maldi.geojson  # Name of the annotation file (annotation
 warped_annotation_file: pixels_maldi_warped.geojson  # Name of the warped annotation file (annotation_transfer.py)
 
 # Microdissection transfer files
-microdissection_non_rigid: True  # Whether to perform a non-rigid transformation for the microdissections
+microdissection_non_rigid: False  # Whether to perform a non-rigid transformation for the microdissections
 warped_microdissection_file: microdissections.geojson  # Name of the warped microdissection file (microdissection_transfer.py)
 
 
@@ -73,6 +73,10 @@ warped_microdissection_file: microdissections.geojson  # Name of the warped micr
 path_to_qp_projects: qp-projects  # Path to the QP-projects
 compression: 100 # Compression factor for compressed versions of the masks
 markers:
+  qupath_microdissection_BPDAC_029_36_L1_S7: HES_microdissection_BPDAC_029_36_L1_S7  # Microdissection 1
+  qupath_microdissection_BPDAC_029_36_L2_S15: HES_microdissection_BPDAC_029_36_L2_S15  # Microdissection 2
+  # qupath_microdissection_X0923_009: HES_microdissection_X0923_009  # Microdissection 3
+  # qupath_microdissection_X0923_010: HES_microdissection_X0923_010  # Microdissection 4
   qupath_Lesion: HES_Lesion  # Tumor regions
   qupath_Defects: PANCKm-CD8r_Defects  # Defects in the tissue
   xgboost_Collagen: PicroSiriusRed_Collagen  # Collagen in the stroma

@@ -1,6 +1,6 @@
 # This is the configuration file for the pipeline
 
-lame: 12AG01290-26  # Name of the sample
+lame: 14AG03250-38  # Name of the sample
 path_to_data: data_hdd  # Path to the data directory excluding the sample name
 
 
@@ -73,16 +73,20 @@ warped_microdissection_file: microdissections.geojson  # Name of the warped micr
 path_to_qp_projects: qp-projects  # Path to the QP-projects
 compression: 100 # Compression factor for compressed versions of the masks
 markers:
-  qupath_microdissection_BPDAC_029_36_L1_S7: HES_microdissection_BPDAC_029_36_L1_S7  # Microdissection 1
-  qupath_microdissection_BPDAC_029_36_L2_S15: HES_microdissection_BPDAC_029_36_L2_S15  # Microdissection 2
-  # qupath_microdissection_X0923_009: HES_microdissection_X0923_009  # Microdissection 3
-  # qupath_microdissection_X0923_010: HES_microdissection_X0923_010  # Microdissection 4
   qupath_Lesion: HES_Lesion  # Tumor regions
   qupath_Defects: PANCKm-CD8r_Defects  # Defects in the tissue
   xgboost_Collagen: PicroSiriusRed_Collagen  # Collagen in the stroma
   xgboost_CD8: PANCKm-CD8r_CD8  # CD8+ T cells
   xgboost_Tumor: PANCKm-CD8r_Tumor  # Tumor cells
   xgboost_Stroma: PANCKm-CD8r_Stroma  # Stroma in the tissue
+
+markers_microdissection:
+  qupath_microdissection_BPDAC_086_38_L1_S240_L004: HES_microdissection_BPDAC_086_38_L1_S240_L004  # Microdissection 1
+  qupath_microdissection_BPDAC_086_38_L2_S247_L004: HES_microdissection_BPDAC_086_38_L2_S247_L004 # Microdissection 2
+  # qupath_microdissection_BPDAC_042_11_L3_S102: HES_microdissection_BPDAC_042_11_L3_S102 # Microdissection 3
+  # qupath_microdissection_X0623_013: HES_microdissection_X0623_013  # Microdissection 4
+  # qupath_microdissection_X0623_014: HES_microdissection_X0623_014  # Microdissection 5
+  # qupath_microdissection_X0623_015: HES_microdissection_X0623_015  # Microdissection 6
 
 MALDI_PIXEL_LENGTH: 50  # Pixel length of the MALDI images
 IMAGE_PIXEL_LENGTH: 0.2631  # Pixel length of the images in micrometers

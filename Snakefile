@@ -167,6 +167,16 @@ rule mask_generation:
         "singularity exec --nv m2aia.sif python mask_generation.py"
 
 
+rule mask_generation_microdissection:
+    output: 
+        protected(expand("{path_to_data}/{lame}/results/masks/{marker}_mask.png",
+                         path_to_data=config['path_to_data'],
+                         lame=config['lame'],
+                         marker=config['markers_microdissection'].values()))
+    shell:
+        "singularity exec --nv m2aia.sif python mask_generation_microdissection.py"
+
+
 # Run the mask density python script
 rule mask_densities:
     input:
@@ -174,7 +184,7 @@ rule mask_densities:
         expand("{path_to_data}/{lame}/results/masks/{marker}_mask.png",
                path_to_data=config['path_to_data'],
                lame=config['lame'],
-               marker=config['markers'].values()),
+               marker=list(config["markers"].values()) + list(config["markers_microdissection"].values())),
         f"{config['path_to_data']}/{config['lame']}/results/pixels_maldi_warped.geojson"
     output: 
         f"{config['path_to_data']}/{config['lame']}/results/pixels_maldi_warped_density_gdf.pkl",

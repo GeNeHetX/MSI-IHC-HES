@@ -10,7 +10,7 @@ with open("config.yaml", 'r') as stream:
 
 # Hyperparameters
 lame = config["lame"]  # Lame name
-markers = config["markers"].values()  # List of markers
+markers = list(config["markers"].values()) + list(config["markers_microdissection"].values())  # List of markers including the microdissection markers
 
 MALDI_PIXEL_LENGTH = config["MALDI_PIXEL_LENGTH"]  # MALDI pixel length in micrometers
 IMAGE_PIXEL_LENGTH = config["IMAGE_PIXEL_LENGTH"]  # Image pixel length in micrometers
@@ -26,15 +26,6 @@ pixels_gdf["centroid"] = pixels_gdf.geometry.centroid
 # Transform the centroid to tuple
 pixels_gdf["x_warped"] = pixels_gdf.centroid.x
 pixels_gdf["y_warped"] = pixels_gdf.centroid.y
-
-
-# # Add the original pixel coordinates to the geodataframe
-# coord_scils = pd.read_csv(f"{config['path_to_data']}/{lame}/maldi/coord.csv",
-#                           skiprows=8,
-#                           sep=';')[["x", "y"]]  # Read the original pixels scils coordinates
-# coord_scils["y"] = coord_scils["y"].max() - coord_scils["y"]  # Invert the y axis
-# pixels_gdf["x_original"] = coord_scils.x  # Add the original x coordinates to the geodataframe
-# pixels_gdf["y_original"] = coord_scils.y  # Add the original y coordinates to the geodataframe
 
 # Compute the half length of the square around the centroid in pixels
 l = int((MALDI_PIXEL_LENGTH / IMAGE_PIXEL_LENGTH) / 2)

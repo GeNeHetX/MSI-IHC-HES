@@ -1,7 +1,7 @@
 # This is the configuration file for the pipeline
 
-lame: 14AG03250-38  # Name of the sample
-path_to_data: data_hdd  # Path to the data directory excluding the sample name
+lame: 544085-14
+path_to_data: data_external  # Path to the data directory excluding the sample name
 
 
 #####################
@@ -81,12 +81,12 @@ markers:
   xgboost_Stroma: PANCKm-CD8r_Stroma  # Stroma in the tissue
 
 markers_microdissection:
-  qupath_microdissection_BPDAC_086_38_L1_S240_L004: HES_microdissection_BPDAC_086_38_L1_S240_L004  # Microdissection 1
-  qupath_microdissection_BPDAC_086_38_L2_S247_L004: HES_microdissection_BPDAC_086_38_L2_S247_L004 # Microdissection 2
-  # qupath_microdissection_BPDAC_042_11_L3_S102: HES_microdissection_BPDAC_042_11_L3_S102 # Microdissection 3
-  # qupath_microdissection_X0623_013: HES_microdissection_X0623_013  # Microdissection 4
-  # qupath_microdissection_X0623_014: HES_microdissection_X0623_014  # Microdissection 5
-  # qupath_microdissection_X0623_015: HES_microdissection_X0623_015  # Microdissection 6
+  qupath_microdissection_BPDAC_023_19_L1_S92: HES_microdissection_BPDAC_023_19_L1_S92  # Microdissection 1
+#   # qupath_microdissection_BPDAC_086_38_L2_S247_L004: HES_microdissection_BPDAC_086_38_L2_S247_L004 # Microdissection 2
+#   # qupath_microdissection_BPDAC_042_11_L3_S102: HES_microdissection_BPDAC_042_11_L3_S102 # Microdissection 3
+#   # qupath_microdissection_X0623_013: HES_microdissection_X0623_013  # Microdissection 4
+#   # qupath_microdissection_X0623_014: HES_microdissection_X0623_014  # Microdissection 5
+#   # qupath_microdissection_X0623_015: HES_microdissection_X0623_015  # Microdissection 6
 
 MALDI_PIXEL_LENGTH: 50  # Pixel length of the MALDI images
 IMAGE_PIXEL_LENGTH: 0.2631  # Pixel length of the images in micrometers

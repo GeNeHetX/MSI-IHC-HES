@@ -1,21 +1,17 @@
 #!/bin/bash
 
 # Array of values
-values=("543933-23" "543933-24" "544085-12" "544085-14" "544085-17")
+slides=("546332-17" "546332-26" "546332-38")
 
-# Loop through each value
-for value in "${values[@]}"; do
-    echo "Processing value $value"
+# Loop through slides
+for slide in "${slides[@]}"; do
+    echo "Processing slide $slide"
 
-    # Replace the value in the file
-    sed -i "3s/.*/lame: $value/" config.yaml
-
-    # Sleep for 2 second
+    # Replace the slide in the file
+    sed -i "3s/.*/lame: $slide/" config.yaml
     sleep 2
 
     # Run the snakemake pipeline
-    snakemake --use-singularity maldi_peaks
-
-    # Sleep for 2 second
-    sleep 2
+    snakemake --cores 15 --use-singularity maldi_peaks
+    sleep 60
 done

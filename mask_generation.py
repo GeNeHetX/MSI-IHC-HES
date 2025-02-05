@@ -69,7 +69,10 @@ for model, marker in markers.items():
 
         # Stack all the masks horizontally to create a single mask
         mask = np.hstack([mask for mask in masks])
-
+        
+        # Delete the masks to free memory
+        del masks
+        
         # Complete the mask to meet the original image size
         mask = np.pad(mask, ((0, 0), (0, original_width - mask.shape[1])), mode='edge')
 
@@ -85,6 +88,9 @@ for model, marker in markers.items():
 
         # Print the density of the mask
         print(f"Density = {mask.mean()}")
+
+        # Delete the masks to free memory
+        del mask, mask_small
     
     # If model starts with "xgboost", then we need to apply XGBoost model on the image
     elif model.startswith("xgboost"):
@@ -123,8 +129,14 @@ for model, marker in markers.items():
             # Append the mask to the mask_tiles list
             mask_tiles.append(preds.reshape(img_tile.shape[:2]) > threshold)
 
+        # Delete the model and image tiles to free memory
+        del model, img_tiles
+
         # Concatenate the mask tiles into a single mask
         mask = np.concatenate(mask_tiles, axis=1)
+
+        # Delete the mask tiles to free memory
+        del mask_tiles
 
         # Clean the mask
         print(f"Cleaning the {marker}_mask")
@@ -134,10 +146,16 @@ for model, marker in markers.items():
         print(f"Density before cleaning = {mask.mean()}")
         print(f"Density after  cleaning = {mask_clean.mean()}")
 
+        # Delete the mask to free memory
+        del mask
+
         # Save the cleaned mask and compressed version of it
         print(f"Saving the {marker}_mask")
         PIL.Image.fromarray(mask_clean).save(f"{config['path_to_data']}/{lame}/results/masks/{marker}_mask.png")
         PIL.Image.fromarray(mask_clean[::compression, ::compression]).save(f"{config['path_to_data']}/{lame}/results/masks/{marker}_mask_compressed.png")
+
+        # Delete the mask to free memory
+        del mask_clean
 
     # Raise an error if the model is not recognized
     else:

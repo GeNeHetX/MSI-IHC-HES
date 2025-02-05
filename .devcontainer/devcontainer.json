@@ -38,6 +38,7 @@
     "mounts": [
         "source=/home/ahmed/Data,target=/workspaces/MSI-IHC-HES/data,type=bind,consistency=cached",
         "source=/mnt/hdd/Data,target=/workspaces/MSI-IHC-HES/data_hdd,type=bind,consistency=cached",
+        "source=/media/ahmed/6F7E-F5D4/new_lames,target=/workspaces/MSI-IHC-HES/data_external,type=bind,consistency=cached",
         "source=/home/ahmed/QP-projects,target=/workspaces/MSI-IHC-HES/qp-projects,type=bind,consistency=cached"
     ]
 

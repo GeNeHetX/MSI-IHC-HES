@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Array of values
-slides=("546332-17" "546332-26" "546332-38")
+slides=("13AG06573-10" "13AG06573-18" "13AG06746-19" "13AG06746-22" "13AG06746-27" "14AG03250-32" "14AG03681-25" "14AG03681-31" "14AG06301-08" "14AG06301-09")
 
 # Loop through slides
 for slide in "${slides[@]}"; do
@@ -12,6 +12,6 @@ for slide in "${slides[@]}"; do
     sleep 2
 
     # Run the snakemake pipeline
-    snakemake --cores 15 --use-singularity maldi_peaks
+    snakemake --use-singularity mask_generation
     sleep 60
 done

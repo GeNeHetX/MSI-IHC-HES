@@ -1,6 +1,6 @@
 # This is the configuration file for the pipeline
 
-lame: 544085-14
+lame: 543933-18
 path_to_data: data_external  # Path to the data directory excluding the sample name
 
 
@@ -73,8 +73,8 @@ warped_microdissection_file: microdissections.geojson  # Name of the warped micr
 path_to_qp_projects: qp-projects  # Path to the QP-projects
 compression: 100 # Compression factor for compressed versions of the masks
 markers:
-  qupath_Lesion: HES_Lesion  # Tumor regions
-  qupath_Defects: PANCKm-CD8r_Defects  # Defects in the tissue
+  # qupath_Lesion: HES_Lesion  # Tumor regions
+  # qupath_Defects: PANCKm-CD8r_Defects  # Defects in the tissue
   xgboost_Collagen: PicroSiriusRed_Collagen  # Collagen in the stroma
   xgboost_CD8: PANCKm-CD8r_CD8  # CD8+ T cells
   xgboost_Tumor: PANCKm-CD8r_Tumor  # Tumor cells

@@ -7,6 +7,7 @@ from skimage.filters import threshold_isodata
 from tqdm import tqdm
 import yaml
 import os
+import gc
 
 # Increase the limit of allowed images size
 PIL.Image.MAX_IMAGE_PIXELS = 10e10
@@ -63,6 +64,7 @@ for model, marker in markers.items():
 
         # Clear tile and mask to free memory
         del tile
+        gc.collect()
 
         # Create a generator of all tiles as binary masks
         masks = ((io.imread(f"{path_qp}/{marker}_mask_{i}_of_{num_of_tiles}.png")[:, :, 1] < thresh) for i in range(1, num_of_tiles+1))
@@ -72,6 +74,7 @@ for model, marker in markers.items():
         
         # Delete the masks to free memory
         del masks
+        gc.collect()
         
         # Complete the mask to meet the original image size
         mask = np.pad(mask, ((0, 0), (0, original_width - mask.shape[1])), mode='edge')
@@ -91,6 +94,7 @@ for model, marker in markers.items():
 
         # Delete the masks to free memory
         del mask, mask_small
+        gc.collect()
     
     # If model starts with "xgboost", then we need to apply XGBoost model on the image
     elif model.startswith("xgboost"):
@@ -131,12 +135,14 @@ for model, marker in markers.items():
 
         # Delete the model and image tiles to free memory
         del model, img_tiles
+        gc.collect()
 
         # Concatenate the mask tiles into a single mask
         mask = np.concatenate(mask_tiles, axis=1)
 
         # Delete the mask tiles to free memory
         del mask_tiles
+        gc.collect()
 
         # Clean the mask
         print(f"Cleaning the {marker}_mask")
@@ -148,6 +154,7 @@ for model, marker in markers.items():
 
         # Delete the mask to free memory
         del mask
+        gc.collect()
 
         # Save the cleaned mask and compressed version of it
         print(f"Saving the {marker}_mask")
@@ -156,6 +163,7 @@ for model, marker in markers.items():
 
         # Delete the mask to free memory
         del mask_clean
+        gc.collect()
 
     # Raise an error if the model is not recognized
     else:

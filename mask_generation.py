@@ -140,29 +140,27 @@ for model, marker in markers.items():
         # Concatenate the mask tiles into a single mask
         mask = np.concatenate(mask_tiles, axis=1)
 
+        # Print the density of the mask
+        print(f"Density before cleaning = {mask.mean()}")
+
         # Delete the mask tiles to free memory
         del mask_tiles
         gc.collect()
 
         # Clean the mask
         print(f"Cleaning the {marker}_mask")
-        mask_clean = morphology.remove_small_objects(mask, min_size=min_size)
+        mask = morphology.remove_small_objects(mask, min_size=min_size)
 
         # Print the density of the mask
-        print(f"Density before cleaning = {mask.mean()}")
-        print(f"Density after  cleaning = {mask_clean.mean()}")
-
-        # Delete the mask to free memory
-        del mask
-        gc.collect()
+        print(f"Density after cleaning = {mask.mean()}")
 
         # Save the cleaned mask and compressed version of it
         print(f"Saving the {marker}_mask")
-        PIL.Image.fromarray(mask_clean).save(f"{config['path_to_data']}/{lame}/results/masks/{marker}_mask.png")
-        PIL.Image.fromarray(mask_clean[::compression, ::compression]).save(f"{config['path_to_data']}/{lame}/results/masks/{marker}_mask_compressed.png")
+        PIL.Image.fromarray(mask).save(f"{config['path_to_data']}/{lame}/results/masks/{marker}_mask.png")
+        PIL.Image.fromarray(mask[::compression, ::compression]).save(f"{config['path_to_data']}/{lame}/results/masks/{marker}_mask_compressed.png")
 
         # Delete the mask to free memory
-        del mask_clean
+        del mask
         gc.collect()
 
     # Raise an error if the model is not recognized
